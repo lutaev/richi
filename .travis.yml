@@ -10,4 +10,6 @@ deploy:
   provider: heroku
   app: richi-sh
   api_key:
-    secure: 775cdc17-3e24-41f4-a025-3fe418661dc8
+    secure: yozvkJNjqwIxHf3sgjcsZ59lT9prV8aaOORnX1yEqUD2F3YLdaMGmYI4fT+Uun3I/8n9ygr/X4r0RQK/1VGndtz9nx2LZSuAzhWId46I2ERz7T9PD8orIta3vVNCTYpXu648go1rpVfHwAv0ZaHW0jk3alMOqh3NshOG+ibyhoAGpTBbTtBxEPFR8gHYmlr4vQYkM/0QdBERKajU6+EJ2ukMDFkoZ+iIdgrXFlCdQnCCgkbMOQ+EwLvZKF/4KRQ93KyMWjn2nJKpYq6evXczseDHMcs8f/ku0nAyh0Myb1GTbAIalmXQAxYRY6V8RXt/gC3ox2AsEyPNrLG52mDLomRgg4v19arlrX+/Jhsw7GPTtCjDZhixdtWZCC0wIvb8iOd8BBeBrDl50TK7B/1D1HZ11Sc5DaOv4JE+piKkxh92rmycVrLe5AcZd/5Kym8K9I0Dq1JqoN9BYMxF8tPndqett/pWLIcmoN56EwYT/yhBCvraC/bteIWK5OUQqcHllZoUnZXsMCBiYeXKvzZLIcDFYAyNgqoJ+dw+Mo7DBo04W/HXL4AKfqFXUk+jiTYPPSbYazaCGlupZsEu4tpZw/d4T6Pxfdix+2GIvf2743qBcdBsmkkKypPK4MPcEKuZqO/shretEOYb01CuTRDQNo4WomEE2wK0WN8NFOPW2xQ=
+  on:
+    repo: lutaev/richi
