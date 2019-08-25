@@ -1,10 +1,16 @@
 sudo: required
-
 language: node_js
 node_js:
-  - "8"
-
+- '8'
 before_script:
-  - npm install
+- npm install
 script:
-  - npm run test
+- npm run test
+deploy:
+  provider: heroku
+  app: richi-sh
+  api_key:
+    secure: MY_SECRET_ENV
+env:
+  matrix:
+    secure: iNwOkzdlMnv6tG62pSxIkU7jaf0wOXk6xQ61wOoD2cJFhrC2Xr0HjHPr24tnEQSEipCEp9nGSicp/ZywzULHeKnDXisTwFhreSilstGxDey6E5hLsIexUhjmgw4e06D3RH6vSzuZKrVmjuzukuveUGP/GAUHRiRmKSdqI9Z9ULVu0+lh0t2vkv+nWFRNqUI+AMHkr94CWsrN570i4FvtEhKhRUR18GAyWjAZNoE3Find4cYcPRIcUIlzYj1GHWqIp1TxTtv2q52ec5zUL1jT46m9BpA1Zr6tE4UXnFX9tZ7quPMdY+pfoRXwRDD31eZqGc8fovdSXH1UAaDzew6iCX6HdRRuDDmd9RGKG2PptcGbNY3nmzqK1lZT1MU0ws4yGp+e4tE2aGbyjJ3AQlQv1rC3uecJlOyjgWg6MmLwGn0M9IwaHdF0GQUSJBUCl99WMbSHo8sNfcezEAd48Li29m22HxWBjtzna5VtT8aNI+oRuxeEkSm3QcTM0M2dO4Y3Xf5DOn+huEXqHY7wUty9/E4iOtp3ImD62lqIL/HNu+Gj+zbSPllPzlLbf4InWxA39TCnx2f7RHILw2bQOF+RWIqFf+726o/kihSiU+3As+c7ZpHzDrJZXuyOwVyzOnuIBQSCpOS8OVU0VTX1BNsvmm6r5cMf+qyD3VL5a+pt1Xw=
