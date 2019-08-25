@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "export NODE_ENV=development && export NODE_PATH=. && node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "export NODE_ENV=development && export NODE_PATH=. && mocha --timeout 10000 --recursive --reporter spec --exit ./test/specs"
   },
   "author": "Lutaev",
   "license": "MIT",
   "dependencies": {
     "koa": "^2.7.0",
     "koa-router": "^7.4.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
   }
 }
