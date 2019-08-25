@@ -19,4 +19,4 @@ app.use(async (ctx, next) => {
   ctx.body = await readFileThunk(__dirname + '/index.html');
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
