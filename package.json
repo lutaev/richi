@@ -5,16 +5,26 @@
   "main": "index.js",
   "scripts": {
     "start": "export NODE_ENV=development && export NODE_PATH=. && node .",
-    "test": "export NODE_ENV=development && export NODE_PATH=. && mocha --timeout 10000 --recursive --reporter spec --exit ./test/specs"
+    "build": "export NODE_ENV=production && export NODE_PATH=. && node .",
+    "migrate": "sequelize db:migrate",
+    "test": "export NODE_ENV=test && export NODE_PATH=. && export LOG_LEVEL=error && mocha --timeout 10000 --recursive --reporter spec --exit ./test/specs",
+    "test:db": "export NODE_ENV=test && export NODE_PATH=. && cd sequelize && rm -f database_test.sqlite && sequelize db:migrate --env test"
   },
   "author": "Lutaev",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^8.1.0",
+    "fast-safe-stringify": "^2.0.6",
     "koa": "^2.7.0",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.18.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.0"
+    "mocha": "^6.2.0",
+    "sequelize-cli": "^5.5.1"
   }
 }

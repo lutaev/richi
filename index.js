@@ -1,5 +1,9 @@
+require('dotenv').config();
+
 const fs = require('fs');
 const Koa = require('koa');
+const Models = require('sequelize/models');
+const logger = require('util/logger');
 
 const app = new Koa();
 
@@ -19,4 +23,7 @@ app.use(async (ctx, next) => {
   ctx.body = await readFileThunk(__dirname + '/index.html');
 });
 
-app.listen(process.env.PORT || 3000);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  logger.info(`Server is listening on port ${port}`);
+});
