@@ -12,7 +12,7 @@ module.exports = async function createSuperUser() {
   }
 
   const user = {
-    role: 0,
+    role: '0',
     name: 'Superadmin',
     email: 'root@emailrandom.com',
     phoneNumber: ['+11111111111'],

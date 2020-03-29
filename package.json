@@ -8,7 +8,6 @@
     "build": "export NODE_ENV=production && export NODE_PATH=. && node .",
     "migrate": "export NODE_PATH=. && sequelize db:migrate",
     "test": "export NODE_ENV=test && export NODE_PATH=. && export LOG_LEVEL=error && mocha --timeout 10000 --recursive --reporter spec --exit ./test/specs",
-    "test:db": "export NODE_ENV=test && export NODE_PATH=. && cd sequelize && rm -f database_test.sqlite && sequelize db:migrate --env test",
     "script": "export NODE_PATH=. && node scripts"
   },
   "author": "Lutaev",
@@ -18,7 +17,7 @@
     "dotenv": "^8.1.0",
     "fast-safe-stringify": "^2.0.6",
     "koa": "^2.7.0",
-    "koa-router": "^7.4.0",
+    "koa-router": "^8.0.8",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.18.0",
