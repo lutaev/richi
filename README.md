@@ -1,3 +1,9 @@
-# This is a start of cool online shop
+# This is a start of cool app
 
-### The description will be soon...
+### The main goal - to practice with CI and make server side experience deeper.
+
+#### Running scripts:
+
+```
+npm run script -- [script file name]
+```
