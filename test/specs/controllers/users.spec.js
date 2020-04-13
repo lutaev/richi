@@ -17,7 +17,7 @@ describe('Users controllers', () => {
       const user = await users.build({
         role: '1',
         name: 'Admin',
-        email: 'admint@emailrandom.com',
+        email: 'admin@emailrandom.com',
         phoneNumber: ['+11111111111'],
         password: await hash('test'),
         confirmed: true

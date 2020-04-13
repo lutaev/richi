@@ -7,6 +7,7 @@
     "start": "export NODE_ENV=development && export NODE_PATH=. && node .",
     "build": "export NODE_ENV=production && export NODE_PATH=. && node .",
     "migrate": "export NODE_PATH=. && sequelize db:migrate",
+    "migrate:test": "export NODE_ENV=test && export NODE_PATH=. && sequelize db:migrate",
     "test": "export NODE_ENV=test && export NODE_PATH=. && export LOG_LEVEL=error && mocha --timeout 10000 --recursive --reporter spec --exit ./test/specs",
     "script": "export NODE_PATH=. && node scripts"
   },
