@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     role: {
-      type: DataTypes.ENUM(0, 1, 2)
+      type: DataTypes.ENUM('0', '1', '2')
     },
     name: {
       type: DataTypes.STRING

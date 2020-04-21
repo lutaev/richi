@@ -13,7 +13,7 @@ module.exports = {
         }
       },
       role: {
-        type: Sequelize.ENUM(0, 1, 2)
+        type: Sequelize.ENUM('0', '1',  '2')
       },
       name: {
         type: Sequelize.STRING

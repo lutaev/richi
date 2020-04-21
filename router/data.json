@@ -1,0 +1,14 @@
+{
+  "/": {
+    "module": "index",
+    "paths": {
+      "/": ["get", "getMainPage", "*"]
+    }
+  },
+  "/user": {
+    "module": "user",
+    "paths": {
+      "/list": ["get", "getAllUsers", "*"]
+    }
+  }
+}
