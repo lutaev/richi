@@ -1,8 +1,7 @@
-const path = require('path');
 const dotenv = require('dotenv');
-const logger = require('util/logger');
-
 dotenv.config({ path: '.env' });
+
+const logger = require('util/logger');
 
 const {
   PG_SQL_USER, PG_SQL_PASSWORD, PG_SQL_HOST, PG_SQL_DB,

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "export NODE_ENV=development && export NODE_PATH=. && node .",
-    "build": "export NODE_ENV=production && export NODE_PATH=. && node .",
+    "start": "export NODE_ENV=development && export NODE_PATH=. && node ./server",
+    "build": "export NODE_ENV=production && export NODE_PATH=. && node ./server",
     "migrate": "export NODE_PATH=. && sequelize db:migrate",
     "migrate:test": "export NODE_ENV=test && export NODE_PATH=. && sequelize db:migrate",
     "test": "export NODE_ENV=test && export NODE_PATH=. && export LOG_LEVEL=error && mocha --timeout 10000 --recursive --reporter spec --exit ./test/specs",
@@ -14,10 +14,12 @@
   "author": "Lutaev",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^3.0.7",
     "dotenv": "^8.1.0",
     "fast-safe-stringify": "^2.0.6",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.7.0",
+    "koa-bodyparser": "^4.3.0",
     "koa-router": "^8.0.8",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
@@ -27,6 +29,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "sequelize-cli": "^5.5.1"
+    "sequelize-cli": "^5.5.1",
+    "supertest": "^4.0.2"
   }
 }

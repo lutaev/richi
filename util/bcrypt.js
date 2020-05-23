@@ -6,5 +6,5 @@ module.exports.hash = async function(password) {
 }
 
 module.exports.compare = async function(password, hash) {
-  return bcrypt.hash(password, hash)
+  return bcrypt.compare(password, hash)
 }
