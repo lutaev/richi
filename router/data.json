@@ -2,13 +2,15 @@
   "/": {
     "module": "index",
     "paths": {
-      "/": ["get", "getMainPage", "*"]
+      "/": ["get", "getMainPage"]
     }
   },
   "/user": {
     "module": "user",
     "paths": {
-      "/list": ["get", "getAllUsers", "*"]
+      "/register": ["post", "register"],
+      "/login": ["post", "login"],
+      "/list": ["get", "getAllUsers"]
     }
   }
 }

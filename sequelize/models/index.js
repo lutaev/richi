@@ -9,7 +9,6 @@ const config = require('../config')[env];
 const db = {};
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
-
 fs
   .readdirSync(__dirname)
   .filter(file => (file !== basename) && (file.slice(-3) === '.js'))
