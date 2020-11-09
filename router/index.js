@@ -3,7 +3,7 @@ const routerData = require('./data');
 
 const router = new Router();
 Object.entries(routerData).map(([key, value]) => {
-  const controller = require(`controllers/${value.module}`);
+  const controller = require(`controllers/${value.controller}`);
   const subRouter = new Router();
 
   Object.entries(value.paths).map(([path, data]) => {
