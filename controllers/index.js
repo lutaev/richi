@@ -15,4 +15,4 @@ const readFileThunk = async src => {
 module.exports.getMainPage = async (ctx, next) => {
   await next();
   ctx.body = await readFileThunk(path.resolve(process.cwd(), 'index.html'));
-}
+};

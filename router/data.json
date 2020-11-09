@@ -1,16 +1,27 @@
 {
   "/": {
-    "module": "index",
+    "controller": "index",
     "paths": {
       "/": ["get", "getMainPage"]
     }
   },
   "/user": {
-    "module": "user",
+    "controller": "user",
     "paths": {
-      "/register": ["post", "register"],
-      "/login": ["post", "login"],
-      "/list": ["get", "getAllUsers"]
+      "/list": ["get", "getAllUsers"],
+      "/me": ["get", "getUserProfile"]
+    }
+  },
+  "/register": {
+    "controller": "auth",
+    "paths": {
+      "/": ["post", "register"]
+    }
+  },
+  "/login": {
+    "controller": "auth",
+    "paths": {
+      "/": ["post", "login"]
     }
   }
 }
