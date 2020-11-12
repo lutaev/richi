@@ -20,4 +20,4 @@ module.exports = async function createSuperUser() {
     confirmed: true
   };
   return users.build(user).save()
-}
+};

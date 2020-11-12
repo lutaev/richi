@@ -20,7 +20,7 @@ module.exports.register = async (ctx, next) => {
         [Op.contains]: [params.phoneNumber]
       }
     }
-  })
+  });
   if(existingUser) {
     return ctx.throw(400, errorConst.INVALID_USER_NUMBER);
   }
@@ -49,7 +49,7 @@ module.exports.login = async (ctx, next) => {
         [Op.contains]: [phoneNumber]
       }
     }
-  })
+  });
 
   if(!user) {
     return ctx.throw(404, errorConst.USER_NOT_FOUND);
