@@ -22,7 +22,7 @@ describe('Users controllers', () => {
       password: await hash(password),
       confirmed: true
     }
-  })
+  });
 
   afterEach(async () => {
     await User.destroy({
@@ -34,7 +34,11 @@ describe('Users controllers', () => {
     it('should return users list', async () => {
       await User.build(testUser).save();
 
-      const allUsers = toJSON(await User.findAll());
+      const allUsers = toJSON(await User.findAll()).map(item => {
+        delete item.password;
+        return item;
+      });
+
       const user = allUsers[0];
       const token = jwt.sign({
         id: user.id,

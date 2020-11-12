@@ -1,17 +1,22 @@
 const User = require('sequelize/models').users;
-const authUtil = require('util/auth');
-const errorConst = require('const/errors');
 
 module.exports.getAllUsers = async (ctx, next) => {
   await next();
-  ctx.body = await User.findAll().map(item => item.toJSON());
+  ctx.body = await User.findAll().map(item => {
+    const parsed = item.toJSON();
+    delete parsed.password;
+    return parsed;
+  });
 };
 
 module.exports.getUserProfile = async (ctx, next) => {
   await next();
-  ctx.body = await User.findOne({
+  const result = await User.findOne({
     where: {
       uuid: ctx.request.decodedUser.uuid
     }
   });
+
+  delete result.password;
+  ctx.body = result;
 };
