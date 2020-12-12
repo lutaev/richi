@@ -31,6 +31,7 @@ module.exports = {
   production: {
     username: PG_SQL_USER,
     password: PG_SQL_PASSWORD,
+    host: PG_SQL_HOST,
     database: PG_SQL_DB,
     dialect: 'postgres',
     logging: msg => logger.info(msg),
