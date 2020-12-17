@@ -2,6 +2,7 @@ const authUtil = require('util/auth');
 const errorConst = require('const/errors');
 
 const whiteList = [
+  '/',
   '/login',
   '/register'
 ];
