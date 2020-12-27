@@ -40,7 +40,7 @@ script:
   - npm run test
 
 after_success:
-  - docker image build -t lutaev/richi-fe:latest .
+  - docker image build -t lutaev/richi:latest .
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       docker tag richi lutaev/richi:latest;
