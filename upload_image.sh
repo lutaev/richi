@@ -11,8 +11,8 @@ APP_NAME=$6
 DEPLOYMENT_REGION=$7
 # IMAGE_NAME=$8
 DOCKER_REPOSITORY=$9
+DOCKER_TAG=$10
 
-DOCKER_TAG="latest"
 DOCKERRUN_FILE="Dockerrun.aws.json"
 # DOCKERCFG=".dockercfg"
 # DOCKER_CONFIG="/home/travis/.docker/config.json"

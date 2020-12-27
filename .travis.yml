@@ -46,12 +46,11 @@ after_success:
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       docker tag richi lutaev/richi:latest;
       docker push lutaev/richi:latest;
-      ./upload_image.sh $DOCKER_USERNAME $DOCKER_PASSWORD $DEPLOYMENT_BUCKET $DEPLOYMENT_ENV_NAME $DEPLOYMENT_ENV_ID $APP_NAME $DEPLOYMENT_REGION $IMAGE_NAME $DOCKER_REPOSITORY;
+      ./upload_image.sh $DOCKER_USERNAME $DOCKER_PASSWORD $DEPLOYMENT_BUCKET $DEPLOYMENT_ENV_NAME $DEPLOYMENT_ENV_ID $APP_NAME $DEPLOYMENT_REGION $IMAGE_NAME $DOCKER_REPOSITORY $TRAVIS_BUILD_ID;
     fi
 
 env:
   global:
-    - DOCKER_TAG=latest
     - APP_NAME=richi
     - IMAGE_NAME=richi
     - DOCKER_REPOSITORY=richi
