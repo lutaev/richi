@@ -1,27 +1,70 @@
 sudo: required
+
 language: node_js
+
+python:
+  - "3.4"
+  - "pypy-5.3.1"
+
 node_js:
-- '13'
+  - '13'
+
+services:
+  - docker
+
+before_install:
+  - gem update --system
+  - sudo apt-get install -y python3.4
+  - sudo apt-get install --upgrade -y python-pip
+  - sudo apt-get install jq
+  - sudo pip install --user virtualenv
+  # Create a virtual environment for AWS CLI
+  # - virtualenv my_py3 --python=/usr/bin/python3.4
+  - virtualenv -p python3 my_py3
+  - source my_py3/bin/activate
+  - pip install --upgrade awscli
+  - pip install --upgrade awsebcli
+  # Set AWS information
+  - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+  - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+  - aws configure set default.region us-east-2
+  - aws configure set metadata_service_timeout 1200
+  - aws configure set metadata_service_num_attempts 3
+  - aws configure list
+
+before_script:
+  - npm install
+
+script:
+  - npm run migrate:test
+  - npm run test
+
+after_success:
+  - docker image build -t lutaev/richi-fe:latest .
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      docker tag richi lutaev/richi:latest;
+      docker push lutaev/richi:latest;
+      ./upload_image.sh $DOCKER_USERNAME $DOCKER_PASSWORD $DEPLOYMENT_BUCKET $DEPLOYMENT_ENV_NAME $APP_NAME $DEPLOYMENT_REGION $IMAGE_NAME $DOCKER_REPOSITORY;
+    fi
+
 env:
   global:
-  - PG_SQL_USER=hsxyxlxq
-  - PG_SQL_HOST=balarama.db.elephantsql.com
-  - PG_SQL_DB=hsxyxlxq
-  - PG_SQL_TEST_USER=gskibphv
-  - PG_SQL_TEST_HOST=drona.db.elephantsql.com
-  - PG_SQL_TEST_DB=gskibphv
-  - secure: GBKHYfo8ZR9rV6VrNOQjplHlOzft+EGEL91e+3/B/wFe3Z5gAqKIrfn9vJfxqi67vPJfJq4S5FsRJQMe1cyZiwqqOaM4AajQe+QKuNEGr+kDIdFKUNRC4GdboxMwIEAxuD6wzalDbBIDPcRS/Y2AZeJpAeTU3Piji+AxV2sb7LmlU2zuh6HSHzBJJbxkXo/uSf41S7rzih9hvM9jonr/KkVJRTe+pNYC7WhPMETu/mKOMy+0J5AxnWcdHtr5n9SwwDs6kQmUKEpV3zIhRdSXUTZQ4sRUncBmCZblAohJ4fjTH7tK5wi43kGn20j+xoKKB5R1ptq0w/mVymU+NsqyS3KZ+zTaF9iDKqRRf68eX7wRPKdDxHTOfxEafxgUsuSOw4pPxe0IdsQXFUNkYlGqACx9UAR6UtSxfOjoDQ+wWrpFSyDz7YWLrbhQvSIcyLp7lXKKOrZ0T1xrIJL0yb1e3W6I6G2sPFUoeoJjnT1qZXh7+Tmz42BKIrFohD0nzRxu1MsrFPh8xa8P+cVhoblNghbgdK7A3BhWtJLYQtDcAxQj0FmeLYleB5V8rQt/zBb8GOH2wQ5IotIqO5Qb2iNCAuu4MtqgD9U7NZgLARxkqf5IyTwEYG4/ZJ+q8/+xxMRT/sx+MV9NmGRkjb9AzI2I1bipkfDY/ywgNFwa4JgobMk=
-  - secure: CWKJeAWNn8C2ziy19a50qGLnZkwfp0u5nV+jpQ9vKseEH4oUjcteyuA4amYHY8vCzmNxdcDErezlaBwJ0yiPx1xbCMipsZLAy3oQcKlOPKdqm3DqQAarBq9PYf2LXjisFYsmDJz248rTXI4j9Waddy+Th9PAMDp3srKreR+9vEhi+BE3Mxy03+NbfI3jhc9OuRTofLHv6Vzm+4tYxgE/ODsGpCu31rTBrFzOGdhXB4eLwhOi1qV7IWWD6L4lmJx9DPsLgyt3cZKvV1mbNNz2I/JTHju4IccUx0Ro+b+ZDFarVdXEzuqI1dehHuVry/XWRa7OGpN/nSSK52IWd6cRG6GgTjWE55AACveexTM4Ob5qn/OgVRJBPllnEsEVlUlKzxZe/4RlKY7fNfbpAp+qBW5qFvFJJoopXkX5uiSeziXOaQETKCGJcoyBOlDTLLN5KYAEI+FDKIom/ynajnsb9ACxkQioBuOQA98I3YXGAOAYkCySh+EuAmFPMNRKgoAVGrq5Dz6DznPM2JDQDWppf6hZQSV1Sv2B64l8h6BahD4wb5MLuE9sBYXmKW4iJwN+sfn9I41afIpoQSRC0j+7NeMyY4AovUgEd7iK0xhuxT3sMV6oNQnVUm3rUhRB91BokqIUPr/ybUHcFmLAeA9pddNTo3GO+cfdaf+JEZ92nqo=
-  - secure: Xqmy6nCwjZskJrYZSW4Be9gsieldXry3tRpLJX8kdkLvwpEmHxSpdsu+a9NKN2nPU4PE1Gx5V3d6CUKaZg/8sdCfvibGNKVyDIcXtdryomCWTQn2b9UxfAP3G14QS5M68Ym5PUjgg96USU8ln71Ilm9NwTswP5bV2c5UIFOn2FSuqp0zWBTUYA+snnveJpj3L86UJTI9E7azuQqbfzDOYOEH52ZCMmgKFiwUX0ZR4mpxlCBwrLqf5FXQK0fNDoOUOndr9Bif7wuGbVbr5KFwxfsZ/VF7wgcclNz57kfvJIYr3SorUlyEzASmGCuw6qVq82X6XnljAEOpfgDT54QhBumeo0hqdygNxBGN0pXSuXyhEynoH0GmMjCO1BURYF4u45VtPYfeevfu2ZCAZYynNxqlRenSpu0xL98h4gwDYejP32zIQxfesj1EMmgchruvJmzyHPFsikG+wds9acjxkvcZDsaDkfXsLwrQ3YYnzZZ1yAuJrwXizZGftNaUnidYpIzdh71TvwEUyVLI2yMRBE2CNg8bQXwqh2CWBwk821xtzi4+gc9JKdCfDB72xHffiETkdwicAVKxCEVal5M86pU4KQCEoGxmRMpaGLuf5UyrgwpIASLo6fWpWA2wUupErg3tp6zDLj/pMP7iDCItfzQ4uLgnTpVrVbyhvQPkICI=
-before_script:
-- npm install
-script:
-- npm run migrate:test
-- npm run test
-deploy:
-  provider: heroku
-  app: richi-sh
-  api_key:
-    secure: B60iUP9MJlaQO/V+9KRlmtmRT4ERWgsEYh+fnN7j/ceIEiitsCQ9yJhnWqFc7/KnPKwNXTsb4ZdttWOAT2O1p8kbhimWe6lMmgbAHf5WIg6uX/uF+HWt4HMrCkJVsSqXiEDlKluDIebQhZDc5bavOZv3djEtMDeinlYUXdVgfpe04zWqb1jwI2hS18KNIjnm63EKpmHrekOaWSmhU4OUcVY6tb3vP4S2yfReJxv8F9qdFWr8ZwV0iZ7nS/yFzkXEyX3ZahcolmWwfb71i356uobagr6fq4YWWSauwund/BqqpCrHpbLh5M3pOzhZu7z25ebe7TmxCdIVUj5t0pe81Iq1TMWn/ttQUqnX37bWWz59L+YKWte9JCX4EMAMxiep2GoNZvoxBZxPloIkN3CHOPbid2/HpwFW31uJfXqXn4HVyOdjtvPQHVDYaqe1047AHc+ziFmXYxy8xjARnbyDWFAzheiHIlV+Bl3QysD/VoutyStsLtSO2M/FcRwOwENQBdJQ0o7adiE4ztecJKvUTVx6ljeheFKPrpFjYxoFSnZaMpkR/+4w8UbdDYzlVurVXtz58WO0Nh4VXqKTzzmwqFydX2+FeQCwA0XxCZFY+3+o2clTy7Zl71hMyl20goI35Gc4vNR+EySV+mqkop64YvSBAS3khWFLqczmoV9bwng=
-  on:
-    repo: lutaev/richi
+    - DOCKER_TAG=latest
+    - APP_NAME=richi
+    - IMAGE_NAME=richi
+    - DOCKER_REPOSITORY=richi
+    - IMAGE_NAME=richi
+    - DEPLOYMENT_REGION=us-east-2
+    - DEPLOYMENT_BUCKET=elasticbeanstalk-us-east-2-929692614802
+    - DEPLOYMENT_ENV_NAME=richi-be
+    - DOCKER_EMAIL=docker_email
+    - PG_SQL_TEST_USER=gskibphv
+    - PG_SQL_TEST_HOST=drona.db.elephantsql.com
+    - PG_SQL_TEST_DB=gskibphv
+    - secure: "fCIcID9ZZYq+A4jKlQXAC/OID7tyL8IRB0i78N75ouLsLUFLkv8G9eHNIzS/0X71MXp3xiAIJI0q4hmZ6Cyy2Qci903gyC3IXeOC7jBxFpv9g5BH6neCanuCaCHJh7XkFzZJVKLh2lSus7VUjD3XNInRMqjvsb5j4S03wpayilK6ZNeoexPJPHyIzXKtBzlI6FR3vaFmOF8ehe6u74kZCHZ8bnvMssEvV0enCf5SiXyL7KRBv1Be9lvUCeOSZ4sCUhfVMZGVsSdNPgZT2yIo+L2T4/1RnRezCHEHP4RMWlKRKLll3FstTxYpg0gR/WwivUCJD/YtU8taKVeCWHQ7CodEDYIJKtu4ifHrskTV+ocvzY34HiTIiN8STbBhBhWK1LX/GO8CK7AACl+heyEwePcvJmwUyfAHs9d4g1shiXBjh+4UUcIRmxdt2VrYcT2FcVfaZFQNQthCxdz2evJ2T82JzgUwuymYJZeDo5OSohPeVDkfyZHi8LV+2TDtVfX1A8KFSsX+uwXVpqLcGV8vOYrGr56MF2wdpt8qS+aisDSzmfnAL1wHGNcX9OSuRF62jnhHjSO/OhLfT7oYO1k5lwWiM2DpD83R9NtvP9ZTOxlPdQcjdpbkZh3pCeCyKfrmm6Y/bw7ksvyJf/9BrHyxDjqBWW77ZK3BnQLX9Jl7I3I="
+    - secure: "EeRJxRXCRi0TcTDSk3j9ONlqhMKHxuoCt4ja2/1kvDSpP36cPhh/GNhc2SyoOAZA23VrmZjeqxfFSufnFk5bacDFbLVptvNxsuhbJ5JF46WOmPQH17NRoqTgsMQ9BVMxD+QeR9f3Lmz3YfuJVxb/jO4Dyo9/bg9LGvJGPEALUBmOalL50v2BxHyNq//skberDwqn/JFs9NIhsUuHzoNYzt2QmoiatTBSRfv9tEPFNih7Lr1m86JaNgzH6ZVy0PPscyvEPs/6OhEOsq5W12iWKKhZoaG55b/ma5TwF8MoywZ6qCwhF+C/rHzhJLxg699U4yrfVoSgJtLh07W5T6UL3/4cDvNAI9pW5eG/rbCeu6sHeqpIkBDD0hzbnbIsiWNUClajqB2gbevL1kGSxraRa17+1XqmsYhDIlCp1FpEvo4w4renkDkgH0W+AGj8dDQ0q+V1IS8BO2rBy75W+JlRjtmnVooGgdN5+SUm5nLBtDKUM1NEAkgLH3Gaz+rb4IJurRI6PYmZSfHYEbxW+H81AAuLeSU0H3OqjA6+hYP1n6OIeRZO/FQ1zLBJedpkAU9ZXVnywcq9kQy2XFlYRh1pXN1lgMAUMOdKwCHRzxOcfPs/cvSYwczYGgNn4RIbuytrDFT6yvHu0QRV871KLRObHgW/R+1yffxpvVMuGZJ2NqQ="
+    - secure: "E9y8quE2vgeHdlpALypsUxZ9ha2e3fRSbqhP9lQ7gQ0McacYA7bKefqyyIr/YbSZCnFrV7fwYOBFP5jWjEDEJuh9wEiNryk8HO6wMlbWyD95SvBeJM/M2n9XyCQtRoe+eteUDIE/O4XKefq1yJNoJ9xL0xQhq1h3H5Esno38vpqrTR3Zs6Z2VkmvqSOnCMEKURVf1YOdT5Yc5RIh79wXWvkrRWU7ByqWrCQZkSdWRMfrJzR11w5FgyrYkL09kBKho7zlXgolqqgyLDvKtV137yLqS07SnVz9wEDsHKPOv3RX7xrcWQ6/lmH+HTO7txE/nWAV65LxgMzL7PdXHiH6Zr/t3MAbB2l1ZJVWTvevTlW4KVVZRX1baELLZpvDrdpj3IAqsniYkj4VHhx/qTiGvH/NY2d+fRs3VBJM5Qmt1xfXv1NeOy44m/1Kg2s0XPMdEHWKeIfDEhxbPRIL+Jzw8PXnyUYNkt2sz7lOCE/SLF0htplkHvE4EkkxKjtDZrURatDJMbjxGSv3/PIAHlFwuarSVPSOAEDkf0IzRHP2xF4w8Y327EtHhFD7cK/JEGR6A+ufDotv07T5CbiwK4p9bo4ir/UzYQ38Q4NuESN59BvlPOtE2CAjwOr9kfy8kBrkCMhmFooOuHRlRQSXkuts2XltW4nGQDKPIE2ONLReRKw="
+    - secure: "mxWXp30nuDyqBIo/oxw3mnWtOF8ROJBfy8+uGra3PMqV/T1sY4rzmXGMTrxWUh8R1Js6nQ3oyjp5MwhwOPuwogzTXIHAhl3PWIJaxhFNirjuBxzafoX+MJKnBY3GjrxQyoT6FjVzrApxABEM/LlcwR3SHqyQ01QYp3BZ4jhZ35UmkGAm8qBd6jt33EX7MGcyBtHn1gR7EmHHq6xHRYZK2ECtcQbq+af3C3cojktAWleZghs2L4FSaCS1m8DDEMpXTlTyOlxRRZ/Ht9jvlTcSiqud0nkikHi0rta2EP9oFJR6LA1SukKc+fDVsK+0Kb7+hsgryB08aTQb6PO0q7+YqKMmWPfwqaU4C3s8EkGMdN+2NtU85Gg8iE1iatLXRw/IKgJx1jcif74vP5olPxrJXDJv6W85rH2poICbXVDB8SVbyHrM2qzgsrafgU8OGRLuihfSHp0dSSCamkeWHmVBEIos9vW6lNnvNGOU/dDi18Vjgg02BswFkLSg89KmwmkuwNQ/bMLFpegoJVRSJj/SWu6QyHq3Q2p+uei7kMTLj5eHs5yRh2EGGYdE14XHeja+RpJj4T+u+RTaLfqp+wvcrywLJH+uj6M7OvqADBffrFwCzukBOJ/h6qR14axtQ4aOhNrQGyKW/Z/LXiBWQD4XqYjp7CM4Mix+ps8JcsHG0WU="
+    - secure: "FeBqhakbX9hA4jFAYeqWN4rPjSQn7KXXQHuU3NMuZgzhlv+G/EUptGutlGuQ6y477/ohVVzo4mvs+gdtyGDYZzEx9UUh0JkbRVz4uz+9B1RbEYZHwTZvNNr68Z6ia8kXhyE1LgQTZGg1Q6VtAa+C4rHYq+GzY6cNfDVLI7ydhMuWRmgyHbPYvU7/VDWL0sDbdIZBpGUL8xinMENKDOoPozptX8Om2w5z0UjDHegSToqK5xgMhvRNLTPg0Q+u10BIZBkWhjvRpD9OAhMthCJvvywfenbJjvvC4QOb4wmK3JvATrMP8n9mfj0tHp2pKeI8yXSsPpQYAKpmA3VqvNzU/rvMoJM8Oa0J4f/lGjbK6s5RAwt4fqs1LMaBh7OPvUWSddvg19gtA74dHFqVE3KMXuONsdkvcnR5hfsJ7yoqhUDzItl/uu0yLBVTqUGfPRRzI32lMUIxUz1fdza9+4X4VQ1UqKPFsho6uNFrw/79sv0ZXKfO/MLGoW4WchkF2IvgYKuHEYGXK10SpJ7r6eHtD+xOhQijnCcxFSh7vNCMcxBqxbtEu5iOmwLQJHdHmUDMk+aKNOmcrBoryJ+lx+/x5EQlIKQdjkbvZAnx490KhfiFn01/Z9s+7goSmHeUFqU7RIbmCRNjgRrxpvEWFCi354N6ECrci2pPfb2keQuCBfg="
+    - secure: "T0XuECJx1B9briDsetJ4cvH+5Z5EnfeGfyTi+RWjMzTKAp3qAmDz5Cb0aGo/TRVXTKY/AvPWPxXxYcx/y+NnEvIv1uqBEAIqP4QU2rOx1nYZxbnDTTZo/PeLiZaQxU9i87EbMC8rcly8z/hrUuYPKhjSL/2vcEnjvMGp3uDRoBXJ+k/vm1/PZgfBKroPguWFmuADiuzy9CtpxkoUglAtDCyMd5uMZRgtv1lQxZXThAIVgnD/zpFsAOBI049os1tH8lhMG/+hxarV74fjyzazksqJOV1qSc/aRbU/Mvbl1NcrLkrnfcl6lfMo0fDE1ZhNJy5+xvXSQoEgLNVcZMu+PgzjZyTbe/iEbuoQwSBM0Fu+HgJkVsYoBlh8CT4oTgsAtpP0oTs4QWnzPKiVbVBy/BkEykZDbwhmgD2yJsNsZskPWlze4VNHP5/BlRznbaXHZx68ubl4GObmTSNu5vRiyBpSowSM7EMlQqyLJqeMiNqUxOXoAZHKsxXyaBnwAbfCBkqt5E6YpglyGAzwXSZaJUqAXh9ydr40nJbbHiGziXpKzVUfhXKJGSvx1PcbvHqyYg2ufPo7lcjsc1RpmmzOd0n7mBUNlhVSKR5YMGm0US3vLCtAEZjjwOZSScg27vn+BkZIbuv01S8Gpn5UVdslgvVxY2x5Jk8PtWQBnUTp4NA="
