@@ -4,11 +4,13 @@
 DOCKER_USERNAME=$1
 # DOCKER_PASSWORD=$2
 EB_BUCKET=$3
-EB_ENV=$4
-APP_NAME=$5
-DEPLOYMENT_REGION=$6
-# IMAGE_NAME=$7
-DOCKER_REPOSITORY=$8
+EB_ENV_NAME=$4
+EB_ENV_ID=$5
+
+APP_NAME=$6
+DEPLOYMENT_REGION=$7
+# IMAGE_NAME=$8
+DOCKER_REPOSITORY=$9
 
 DOCKER_TAG="latest"
 DOCKERRUN_FILE="Dockerrun.aws.json"
@@ -32,8 +34,8 @@ sleep 30
 
 echo "::::: Updating Elastic Beanstalk environment :::::"
 aws elasticbeanstalk update-environment \
-  --environment-id $EB_ENV \
-  --environment-name $DEPLOYMENT_ENV_NAME \
+  --environment-id $EB_ENV_ID \
+  --environment-name $EB_ENV_NAME \
   --application-name $APP_NAME \
   --version-label $DOCKER_TAG
 

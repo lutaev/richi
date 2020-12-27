@@ -46,7 +46,7 @@ after_success:
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       docker tag richi lutaev/richi:latest;
       docker push lutaev/richi:latest;
-      ./upload_image.sh $DOCKER_USERNAME $DOCKER_PASSWORD $DEPLOYMENT_BUCKET $DEPLOYMENT_ENV_NAME $APP_NAME $DEPLOYMENT_REGION $IMAGE_NAME $DOCKER_REPOSITORY;
+      ./upload_image.sh $DOCKER_USERNAME $DOCKER_PASSWORD $DEPLOYMENT_BUCKET $DEPLOYMENT_ENV_NAME $DEPLOYMENT_ENV_ID $APP_NAME $DEPLOYMENT_REGION $IMAGE_NAME $DOCKER_REPOSITORY;
     fi
 
 env:
@@ -59,6 +59,7 @@ env:
     - DEPLOYMENT_REGION=us-east-2
     - DEPLOYMENT_BUCKET=elasticbeanstalk-us-east-2-929692614802
     - DEPLOYMENT_ENV_NAME=richi-be
+    - DEPLOYMENT_ENV_ID=e-bpmwuhqejn
     - DOCKER_EMAIL=docker_email
     - PG_SQL_TEST_USER=gskibphv
     - PG_SQL_TEST_HOST=drona.db.elephantsql.com
