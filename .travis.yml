@@ -26,18 +26,18 @@ before_install:
   - pip install --upgrade awsebcli
   # Set AWS information
   - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-  - aws configure set aws_secret_access_key $AWS_SECRET_KEY
+  - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
   - aws configure set default.region us-east-2
   - aws configure set metadata_service_timeout 1200
   - aws configure set metadata_service_num_attempts 3
   - aws configure list
 
 before_script:
-  - npm install
+#  - npm install
 
 script:
-  - npm run migrate:test
-  - npm run test
+#  - npm run migrate:test
+#  - npm run test
 
 after_success:
   - docker image build -t lutaev/richi-fe:latest .
@@ -59,3 +59,4 @@ env:
     - DEPLOYMENT_BUCKET=elasticbeanstalk-us-east-2-929692614802
     - DEPLOYMENT_ENV_NAME=richi-be
     - DOCKER_EMAIL=docker_email
+    - secure: "T0XuECJx1B9briDsetJ4cvH+5Z5EnfeGfyTi+RWjMzTKAp3qAmDz5Cb0aGo/TRVXTKY/AvPWPxXxYcx/y+NnEvIv1uqBEAIqP4QU2rOx1nYZxbnDTTZo/PeLiZaQxU9i87EbMC8rcly8z/hrUuYPKhjSL/2vcEnjvMGp3uDRoBXJ+k/vm1/PZgfBKroPguWFmuADiuzy9CtpxkoUglAtDCyMd5uMZRgtv1lQxZXThAIVgnD/zpFsAOBI049os1tH8lhMG/+hxarV74fjyzazksqJOV1qSc/aRbU/Mvbl1NcrLkrnfcl6lfMo0fDE1ZhNJy5+xvXSQoEgLNVcZMu+PgzjZyTbe/iEbuoQwSBM0Fu+HgJkVsYoBlh8CT4oTgsAtpP0oTs4QWnzPKiVbVBy/BkEykZDbwhmgD2yJsNsZskPWlze4VNHP5/BlRznbaXHZx68ubl4GObmTSNu5vRiyBpSowSM7EMlQqyLJqeMiNqUxOXoAZHKsxXyaBnwAbfCBkqt5E6YpglyGAzwXSZaJUqAXh9ydr40nJbbHiGziXpKzVUfhXKJGSvx1PcbvHqyYg2ufPo7lcjsc1RpmmzOd0n7mBUNlhVSKR5YMGm0US3vLCtAEZjjwOZSScg27vn+BkZIbuv01S8Gpn5UVdslgvVxY2x5Jk8PtWQBnUTp4NA="
