@@ -3,10 +3,10 @@ sudo: required
 language: node_js
 
 node_js:
-  - '13'
+- '13'
 
 services:
-  - docker
+- docker
 
 env:
   global:
@@ -21,11 +21,16 @@ env:
   - secure: Xqmy6nCwjZskJrYZSW4Be9gsieldXry3tRpLJX8kdkLvwpEmHxSpdsu+a9NKN2nPU4PE1Gx5V3d6CUKaZg/8sdCfvibGNKVyDIcXtdryomCWTQn2b9UxfAP3G14QS5M68Ym5PUjgg96USU8ln71Ilm9NwTswP5bV2c5UIFOn2FSuqp0zWBTUYA+snnveJpj3L86UJTI9E7azuQqbfzDOYOEH52ZCMmgKFiwUX0ZR4mpxlCBwrLqf5FXQK0fNDoOUOndr9Bif7wuGbVbr5KFwxfsZ/VF7wgcclNz57kfvJIYr3SorUlyEzASmGCuw6qVq82X6XnljAEOpfgDT54QhBumeo0hqdygNxBGN0pXSuXyhEynoH0GmMjCO1BURYF4u45VtPYfeevfu2ZCAZYynNxqlRenSpu0xL98h4gwDYejP32zIQxfesj1EMmgchruvJmzyHPFsikG+wds9acjxkvcZDsaDkfXsLwrQ3YYnzZZ1yAuJrwXizZGftNaUnidYpIzdh71TvwEUyVLI2yMRBE2CNg8bQXwqh2CWBwk821xtzi4+gc9JKdCfDB72xHffiETkdwicAVKxCEVal5M86pU4KQCEoGxmRMpaGLuf5UyrgwpIASLo6fWpWA2wUupErg3tp6zDLj/pMP7iDCItfzQ4uLgnTpVrVbyhvQPkICI=
 
 before_script:
-  - npm install
+- npm install
 
 script:
-  - npm run migrate:test
-  - npm run test
+- npm run migrate:test
+- npm run test
 
-after_deploy:
-  - echo "done deploying"
+deploy:
+  provider: heroku
+  app: richi-sh
+  api_key:
+    secure: B60iUP9MJlaQO/V+9KRlmtmRT4ERWgsEYh+fnN7j/ceIEiitsCQ9yJhnWqFc7/KnPKwNXTsb4ZdttWOAT2O1p8kbhimWe6lMmgbAHf5WIg6uX/uF+HWt4HMrCkJVsSqXiEDlKluDIebQhZDc5bavOZv3djEtMDeinlYUXdVgfpe04zWqb1jwI2hS18KNIjnm63EKpmHrekOaWSmhU4OUcVY6tb3vP4S2yfReJxv8F9qdFWr8ZwV0iZ7nS/yFzkXEyX3ZahcolmWwfb71i356uobagr6fq4YWWSauwund/BqqpCrHpbLh5M3pOzhZu7z25ebe7TmxCdIVUj5t0pe81Iq1TMWn/ttQUqnX37bWWz59L+YKWte9JCX4EMAMxiep2GoNZvoxBZxPloIkN3CHOPbid2/HpwFW31uJfXqXn4HVyOdjtvPQHVDYaqe1047AHc+ziFmXYxy8xjARnbyDWFAzheiHIlV+Bl3QysD/VoutyStsLtSO2M/FcRwOwENQBdJQ0o7adiE4ztecJKvUTVx6ljeheFKPrpFjYxoFSnZaMpkR/+4w8UbdDYzlVurVXtz58WO0Nh4VXqKTzzmwqFydX2+FeQCwA0XxCZFY+3+o2clTy7Zl71hMyl20goI35Gc4vNR+EySV+mqkop64YvSBAS3khWFLqczmoV9bwng=
+  on:
+    repo: lutaev/richi
