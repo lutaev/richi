@@ -32,13 +32,6 @@ before_install:
   - aws configure set metadata_service_num_attempts 3
   - aws configure list
 
-before_script:
-#  - npm install
-
-script:
-#  - npm run migrate:test
-#  - npm run test
-
 after_success:
   - docker image build -t lutaev/richi-fe:latest .
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
