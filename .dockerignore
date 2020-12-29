@@ -1,6 +1,7 @@
 node_modules
 test
 
+upload_image.sh
 .env
 .dockerignore
 Dockerfile
