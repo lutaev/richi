@@ -39,14 +39,13 @@ script:
   - npm run migrate:test
   - npm run test
 
-
 after_success:
-  - docker image build -t lutaev/richi:latest .
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
+      docker image build -t lutaev/richi:latest .;
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       docker tag richi lutaev/richi:latest;
       docker push lutaev/richi:latest;
-      ./upload_image.sh $DOCKER_USERNAME $DOCKER_PASSWORD $DEPLOYMENT_BUCKET $DEPLOYMENT_ENV_NAME $DEPLOYMENT_ENV_ID $APP_NAME $DEPLOYMENT_REGION $IMAGE_NAME $DOCKER_REPOSITORY $TRAVIS_BUILD_ID;
+      ./upload_image.sh $DEPLOYMENT_BUCKET $DEPLOYMENT_ENV_NAME $DEPLOYMENT_ENV_ID $APP_NAME $DEPLOYMENT_REGION $TRAVIS_BUILD_ID;
     fi
 
 env:
