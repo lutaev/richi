@@ -39,6 +39,7 @@ module.exports.register = async (ctx, next) => {
   ctx.body = true
 }
 
+
 module.exports.login = async (ctx, next) => {
   await next();
   const { phoneNumber, password } = ctx.request.body
