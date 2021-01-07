@@ -8,8 +8,6 @@ COPY . .
 
 RUN yarn install
 
-RUN yarn migrate
-
 CMD ["yarn", "build"]
 
 EXPOSE 3000
